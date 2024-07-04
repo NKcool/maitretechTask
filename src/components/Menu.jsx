@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import data from '../data/Feeds.json'
 import '../style/Menu.css'
@@ -15,11 +15,18 @@ export default function Menu() {
   const [cartcount, setCartcount] = useState(0);
   const [isopen, setIsopen] = useState(false);
   const [total, setTotal] = useState(0);
+
+
+  useEffect(() => {
+    totalHandler();
+  });
+
   const addHandler = (id) => {
     setItems(items.map(item =>
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     ));
     setCartcount(cartcount + 1)
+    totalHandler();
   };
   const minusHandler = (id) => {
     setItems(items.map(item =>
@@ -28,6 +35,7 @@ export default function Menu() {
     if (cartcount > 0) {
       setCartcount(cartcount - 1)
     }
+    totalHandler();
   };
 
   const getImage = (name) => {
@@ -45,15 +53,18 @@ export default function Menu() {
     }
   };
   const countHandler = () => {
+    
     const test = <div onClick={() => cartItemHandler()} className="cartItem">
       {cartcount}
     </div>
     if (cartcount > 0) {
       return test;
+      
     }
     else {
       return '';
     }
+    
   };
 
   const cartItemHandler = () => {
@@ -76,11 +87,23 @@ export default function Menu() {
     }
   }
 
-  for(let i = 0;i<items.length;i++){
-    let temp = 0;
+ const totalHandler = ()=>{
+  let temp = 0;
+  items.forEach((item)=>{
+    if(item.quantity > 0){
+      temp = temp + (item.quantity * item.price)
+    }
+  })
     
 
-  }
+  
+  setTotal(temp)
+
+
+
+ }
+
+ 
 
   return (
     <div className='menu'>
@@ -124,7 +147,7 @@ export default function Menu() {
           save and checkout</Link></button>
           <button onClick={()=>cartItemHandler()} style={{fontSize:'16px',width:'100px'}}>cancel</button>
           </div>
-          <p>Total(INR) = {total}</p>
+          <p style={{position:'absolute',bottom:'13px'}}>Total(INR) = {total}</p>
         </div>
           
       </div> : ''}
