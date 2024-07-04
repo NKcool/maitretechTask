@@ -1,0 +1,10 @@
+.outdiv h5{
+    font-size: 50px;
+    font-weight: 400;
+}
+.outdiv{
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
